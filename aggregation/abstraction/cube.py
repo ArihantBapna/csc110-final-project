@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Hongzip Kim and NicholasMacasaet.
+CSC110 Project for Arihant Bapna, Hongzip Kim and Nicholas Macasaet.
 
 Child to Requester that sends requests to the GDP of StatCan
 """
