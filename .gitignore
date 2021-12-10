@@ -114,4 +114,4 @@ dmypy.json
 .pyre/
 
 # Ignore the data folder
-data/
+data/*
