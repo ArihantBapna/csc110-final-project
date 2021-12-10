@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Zippy Kim and Nick Asante.
+CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Parent class to initiate REST/Stream api calls over http/s and collect data
 """
