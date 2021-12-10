@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Zippy Kim and Nick Asante.
+CSC110 Project for Arihant Bapna, Hongzip Kim and NicholasMacasaet.
 
 Child to Requester that sends requests to the GDP of StatCan
 """
