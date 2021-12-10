@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Zippy Kim and Nick Asante.
+CSC110 Project for Arihant Bapna, Hongzip Kim and Nick Macasaet.
 
 Child to Requester that maps to making WDS requests to and from StatisticsCanada
 Following https://www.statcan.gc.ca/en/developers/wds/user-guide#a10-2 guidelines to make calls
