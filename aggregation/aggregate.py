@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Zippy Kim and Nick Asante.
+CSC110 Project for Arihant Bapna, Hongzip Kim and Nicholas Macasaet.
 
 Aggregates all the data for the project and loads it all up
 """
