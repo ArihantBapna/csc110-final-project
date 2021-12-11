@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Hongzip Kim and Nick Macasaet.
+CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Child to Requester that maps to making WDS requests to and from StatisticsCanada
 Following https://www.statcan.gc.ca/en/developers/wds/user-guide#a10-2 guidelines to make calls
@@ -13,7 +13,7 @@ from pathlib import Path
 from colorama import deinit, Fore, init
 from tqdm import tqdm
 
-from aggregation.abstraction.reqester import Requester
+from compilation.abstraction.reqester import Requester
 
 
 @dataclass

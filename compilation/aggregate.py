@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Hongzip Kim and Nicholas Macasaet.
+CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Aggregates all the data for the project and loads it all up
 """
@@ -9,7 +9,7 @@ from pathlib import Path
 
 from colorama import Fore, init
 
-from aggregation.abstraction.cube import Cube
+from compilation.abstraction.cube import Cube
 
 
 @dataclass
@@ -50,6 +50,16 @@ class Aggregate:
         self.initialize_employment_file()
         self.initialize_retail_file()
         self.initialize_flights_file()
+
+        from compilation.abstraction.reader import Reader
+
+        # Employment Data
+        employment = Reader(self.working_dir, "/employment")
+        employment.read_data()
+
+        # Consumer Data
+        cpi = Reader(self.working_dir, "/cpi")
+        cpi.read_data()
 
     def initialize_gdp_file(self) -> None:
         """

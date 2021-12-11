@@ -1,5 +1,5 @@
 """
-CSC110 Project for Arihant Bapna, Hongzip Kim and Nicholas Macasaet.
+CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Child to Requester that sends requests to the GDP of StatCan
 """
@@ -11,7 +11,7 @@ from pathlib import Path
 
 from colorama import deinit, Fore, init
 
-from aggregation.abstraction.statcan import StatCan
+from compilation.abstraction.statcan import StatCan
 
 
 @dataclass
@@ -199,7 +199,7 @@ class Cube(StatCan):
 
     def save_data_file(self, csv_link_response: str) -> None:
         """
-        Attepmt to save the data.csv file for the cube
+        Attempt to save the data.csv file for the cube
         :param csv_link_response:
         """
         # Consume the json response
