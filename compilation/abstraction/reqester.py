@@ -7,6 +7,7 @@ import time
 from dataclasses import dataclass
 
 import requests
+import urllib3.exceptions
 from colorama import deinit, Fore, init
 from requests import Response
 from requests.structures import CaseInsensitiveDict
@@ -51,31 +52,44 @@ class Requester:
         """
         Returns a get request's response
         """
-        response = requests.get(url=self.endpoint, params=self.body, headers=self.headers)
-        self.response = response
+        try:
+            response = requests.get(url=self.endpoint, params=self.body, headers=self.headers)
+        except requests.exceptions.ConnectionError or \
+                requests.exceptions.ConnectTimeout or \
+                urllib3.exceptions.ProtocolError or \
+                ConnectionResetError as error:
+            return self.catch_response_exception(error)
 
-        if not self.assert_request():
-            self.get_request()
         else:
-            if not self.fail:
-                return response.json()
+            self.response = response
+            if not self.assert_request():
+                self.get_request()
             else:
-                return ''
+                if not self.fail:
+                    return response.json()
+                else:
+                    return ''
 
     def post_request(self, data: str) -> str:
         """
         Returns a post request's response
         """
-        response = requests.post(url=self.endpoint, data=data, params=self.body, headers=self.headers)
-        self.response = response
-
-        if not self.assert_request():
-            self.post_request(data)
+        try:
+            response = requests.post(url=self.endpoint, data=data, params=self.body, headers=self.headers)
+        except requests.exceptions.ConnectionError or \
+                requests.exceptions.ConnectTimeout or \
+                urllib3.exceptions.ProtocolError or \
+                ConnectionResetError as error:
+            return self.catch_response_exception(error)
         else:
-            if not self.fail:
-                return response.json()
+            self.response = response
+            if not self.assert_request():
+                self.post_request(data)
             else:
-                return ''
+                if not self.fail:
+                    return response.json()
+                else:
+                    return ''
 
     def get_header(self) -> CaseInsensitiveDict:
         """
@@ -107,6 +121,27 @@ class Requester:
                 return response
             else:
                 return Response()
+
+    def catch_response_exception(self, error) -> str:
+        """
+        Handles any exception to connections
+        :param error:
+        :return:
+        """
+        if self.needed:
+            print(Fore.RED + "[FATAL ERROR]: Connection failed to "
+                  + self.endpoint
+                  + " "
+                  + str(error)
+                  + ". The WDS service may be down")
+            exit(1)
+        else:
+            print(Fore.YELLOW + "[WARNING]: Connection failed to "
+                  + self.endpoint
+                  + " "
+                  + str(error)
+                  + ". Continuing based on last fetch")
+            return 'Failed'
 
     def assert_request(self) -> bool:
         """

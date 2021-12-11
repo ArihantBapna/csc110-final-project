@@ -61,6 +61,18 @@ class Aggregate:
         cpi = Reader(self.working_dir, "/cpi")
         cpi.read_data()
 
+        # Flights Data
+        flights = Reader(self.working_dir, "/flights")
+        flights.read_data()
+
+        # GDP Data
+        gdp = Reader(self.working_dir, "/gdp")
+        gdp.read_data()
+
+        # Retail Data
+        retail = Reader(self.working_dir, "/retail")
+        retail.read_data()
+
     def initialize_gdp_file(self) -> None:
         """
         - Statistics Canada -

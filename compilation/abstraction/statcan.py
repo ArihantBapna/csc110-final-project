@@ -73,6 +73,7 @@ class StatCan(Requester):
             for data in response.iter_content(block_size):
                 progress_bar.update(len(data))
                 file.write(data)
+        file.close()
         progress_bar.close()
 
         print("[INFO]: Finished downloading "
@@ -106,6 +107,11 @@ class StatCan(Requester):
         Confirm that the WDS request resulted in a successful payload transfer
         """
         init(autoreset=True)
+
+        if response == "Failed" or response == "" or response is None:
+            self.fail = True
+            return
+
         data = json.loads(json.dumps(response))
         if not len(data) > 0:
             if self.needed:

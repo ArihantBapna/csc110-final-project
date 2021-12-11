@@ -52,17 +52,16 @@ class Cube(StatCan):
         else:
             # Save the metadata to the respective file
             self.save_metadata_file(response, metadata_file)
+            # Now we initialize the dataset
+            csv_link_response = self.get_full_table_csv_link()
 
-        # Now we initialize the dataset
-        csv_link_response = self.get_full_table_csv_link()
+            # Again check if the request/response had a failure
+            if self.fail:
+                self.response_sanitation_check()
 
-        # Again check if the request/response had a failure
-        if self.fail:
-            self.response_sanitation_check()
-
-        else:
-            # Save the main dataset for the cube
-            self.save_data_file(csv_link_response=csv_link_response)
+            else:
+                # Save the main dataset for the cube
+                self.save_data_file(csv_link_response=csv_link_response)
 
         deinit()
 
