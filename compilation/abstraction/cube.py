@@ -22,9 +22,17 @@ class Cube(StatCan):
     metadata: dict
     local_dir: str
     update_dataset: bool
+    backup: str
+    try_backup: bool
 
     def __init__(self, pid: int, local_dir: str):
         init(autoreset=True)
+
+        # Assume that we don't need to try the backup server
+        self.try_backup = False
+
+        # Set the backup links in-case it's needed
+        self.backup = "https://backup-server-csc110.herokuapp.com/"
 
         # Assume the dataset doesn't need to be updated
         self.update_dataset = False
@@ -47,6 +55,53 @@ class Cube(StatCan):
         # Check if the request/response had a failure
         if self.fail:
             self.response_sanitation_check()
+            # On Failing the sanitation check try the backup server
+            if needed:
+                link = self.backup + "metadata?filename=" + str(self.pid) + ".json"
+                # Attempt to grab the metadata from the backup s
+                response = self.get_cube_metadata_backup(link, local_dir)
+
+                if response == "Failed":
+                    print(Fore.RED + "[FATAL ERROR]: Could not connect to the backup server either. "
+                                     "Servers may be down or you may not "
+                                     "be connect to the internet.")
+                    exit(1)
+                else:
+                    print(Fore.GREEN + "[SUCCESS]: Downloaded metadata file from the backup server")
+
+            else:
+                print(Fore.YELLOW + "[WARNING]: Could not establish connection "
+                                    "to test for new data. Assuming current meta data is latest.")
+
+            # First check if the data.csv file exists
+            data_file = Path(self.local_dir + "/data.csv")
+            data_needed = not data_file.is_file()
+
+            # Do the initialization for the dataset
+            print("[INFO]: Trying to find the data file for " + self.local_dir)
+
+            if data_needed:
+                print(Fore.YELLOW
+                      + "[WARNING]: Could not find the data file for "
+                      + self.local_dir
+                      + ". Attempting to build a new one")
+
+                csv_link_response = self.get_full_table_csv_link()
+                if not self.fail:
+                    csv_link_response = json.loads(json.dumps(csv_link_response))
+                    self.save_data_file(csv_link_response)
+                else:
+                    print(Fore.RED
+                          + "[FATAL ERROR]: Could not make a request to " + self.endpoint
+                          + ". Service may be down. Trying to use backup")
+
+                    link = self.backup + "data?filename=" + str(self.pid) + ".zip"
+                    self.get_table_downloaded_backup(link, local_dir, (str(self.pid) + ".zip"))
+
+            else:
+                print(Fore.GREEN
+                      + "[SUCCESS] Found data.csv in the cube folder " + local_dir
+                      + ". Assuming the dataset is correct")
 
         # If no failure in request/response
         else:
@@ -90,7 +145,7 @@ class Cube(StatCan):
                       + ". Ensure adequate permissions.")
                 exit(1)  # exit marked here if unable to create/find the cube directory
             else:
-                print("[INFO]: Successfully created "
+                print(Fore.GREEN + "[SUCCESS]: Created "
                       + self.local_dir)
         return needed
 
@@ -117,7 +172,7 @@ class Cube(StatCan):
                               + str(metadata_file.absolute()))
                         needed = True
                     else:
-                        print("[INFO]: Successfully decoded metadata for "
+                        print(Fore.GREEN + "[SUCCESS]: Decoded metadata for "
                               + str(metadata_file.absolute()))
             except IOError as error:
                 print(Fore.RED
@@ -128,7 +183,7 @@ class Cube(StatCan):
                 exit(1)  # exit marked here if the metadata file is corrupted
             else:
                 if not needed:
-                    print("[INFO]: Finished reading "
+                    print(Fore.GREEN + "[SUCCESS]: Finished reading "
                           + str(metadata_file.absolute())
                           + ". Data from "
                           + self.metadata['object']['releaseTime'])
@@ -136,14 +191,14 @@ class Cube(StatCan):
 
     def response_sanitation_check(self) -> None:
         """
-        Alerts to initialization progress
+        Alerts to initialization progress on fail
         """
         if self.needed:
             print(Fore.RED
-                  + "[FATAL ERROR]: Request to initialize metadata for"
+                  + "[FATAL ERROR]: Request to initialize metadata for "
                   + self.local_dir
-                  + " failed.")
-            exit(1)
+                  + " failed from " + self.endpoint + ". Attempting to use the backup server")
+            # exit(1)
         else:
             print(Fore.YELLOW
                   + "[WARNING]: Request to initialize file"
@@ -192,7 +247,7 @@ class Cube(StatCan):
                           + str(error)
                           + ". Ensure adequate permissions. Continuing based on last fetched.")
                 else:
-                    print("[INFO]: Successfully updated "
+                    print(Fore.GREEN + "[SUCCESS]: updated "
                           + str(metadata_file.absolute())
                           + " with data from " + data['object']['releaseTime'])
 
@@ -209,12 +264,10 @@ class Cube(StatCan):
 
         if not data_file.is_file():
             print(Fore.YELLOW
-                  + "[WARNING]: Could not find teh data file for "
+                  + "[WARNING]: Could not find the data file for "
                   + self.local_dir
                   + ". Attempting to build a new one")
             self.update_dataset = True
 
         if self.update_dataset:
             self.get_table_downloaded(link=csv_link_response['object'], local_dir=self.local_dir)
-
-        print("[INFO]: Done compiling data for " + str(Path(self.local_dir).absolute()) + " successfully.")

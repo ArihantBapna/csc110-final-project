@@ -57,8 +57,8 @@ class Requester:
         except requests.exceptions.ConnectionError or \
                 requests.exceptions.ConnectTimeout or \
                 urllib3.exceptions.ProtocolError or \
-                ConnectionResetError as error:
-            return self.catch_response_exception(error)
+                ConnectionResetError:
+            return ''
 
         else:
             self.response = response
@@ -79,8 +79,8 @@ class Requester:
         except requests.exceptions.ConnectionError or \
                 requests.exceptions.ConnectTimeout or \
                 urllib3.exceptions.ProtocolError or \
-                ConnectionResetError as error:
-            return self.catch_response_exception(error)
+                ConnectionResetError:
+            return ''
         else:
             self.response = response
             if not self.assert_request():
@@ -112,15 +112,45 @@ class Requester:
         """
         # Streaming, so we can iterate over the response.
         response = requests.get(self.endpoint, stream=True)
+        self.response = response
 
         # Ensure the stream is alive
         if not self.assert_request():
             self.get_stream()
         else:
             if not self.fail:
+                self.response = response
                 return response
             else:
                 return Response()
+
+    def get_gdrive_stream(self, file_id) -> Response:
+        """
+        Return a stream from google drive
+        :return:
+        """
+
+        link = "https://docs.google.com/uc?export=download"
+        session = requests.Session()
+
+        response = session.get(link, params={'id': file_id}, stream=True)
+        token = self.get_confirm_token(response)
+
+        if token:
+            params = {'id': file_id, 'confirm': token}
+            response = session.get(link, params=params, stream=True)
+
+        return response
+
+    def get_confirm_token(self, response: Response):
+        """
+        Get confirm token from Google Drive
+        :param response:
+        :return:
+        """
+        for key, value in response.cookies.items():
+            if key.startsWith('download warning'):
+                return value
 
     def catch_response_exception(self, error) -> str:
         """
@@ -132,9 +162,7 @@ class Requester:
             print(Fore.RED + "[FATAL ERROR]: Connection failed to "
                   + self.endpoint
                   + " "
-                  + str(error)
-                  + ". The WDS service may be down")
-            exit(1)
+                  + str(error))
         else:
             print(Fore.YELLOW + "[WARNING]: Connection failed to "
                   + self.endpoint

@@ -2,17 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9692b06d-dc4f-4b7d-9fe8-56fe48c7eb2d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/compilation/abstraction/cube.py" beforeDir="false" afterPath="$PROJECT_DIR$/compilation/abstraction/cube.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compilation/abstraction/reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/compilation/abstraction/reader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/compilation/abstraction/reqester.py" beforeDir="false" afterPath="$PROJECT_DIR$/compilation/abstraction/reqester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/compilation/abstraction/statcan.py" beforeDir="false" afterPath="$PROJECT_DIR$/compilation/abstraction/statcan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compilation/aggregate.py" beforeDir="false" afterPath="$PROJECT_DIR$/compilation/aggregate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="226GLqxoLtoQwKzOjDgaJE8ezl2" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -25,15 +37,25 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data1/gdp" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.gutterIcons" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data1/gdp" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="csc110-final-project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="C:\Users\nicho\AppData\Local\Programs\Python\Python39\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -81,13 +103,18 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="bd8462a0-b2dd-40de-b928-1d793f1ca037" name="Changes" comment="" />
+      <changelist id="9692b06d-dc4f-4b7d-9fe8-56fe48c7eb2d" name="Changes" comment="" />
       <created>1639150572169</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1639150572169</updated>
+      <workItem from="1639230610748" duration="6415000" />
+      <workItem from="1639251094092" duration="9652000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
