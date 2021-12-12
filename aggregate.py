@@ -3,13 +3,21 @@ CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Aggregates all the data for the project and loads it all up
 """
+# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+# of the MIT License for the simple fact that I was too lazy to write my own license You should
+# have received a copy of the license with this project, if not and for any other queries contact
+# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
+# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import os
 from dataclasses import dataclass
 from pathlib import Path
 
 from colorama import Fore, init
 
-from compilation.abstraction.cube import Cube
+from cube import Cube
+from openvcovid import OpenCovid
+from reader import Reader
 
 
 @dataclass
@@ -50,8 +58,7 @@ class Aggregate:
         self.initialize_employment_file()
         self.initialize_retail_file()
         self.initialize_flights_file()
-
-        from compilation.abstraction.reader import Reader
+        self.initialize_covid_file()
 
         # Employment Data
         employment = Reader(self.working_dir, "/employment")
@@ -72,6 +79,10 @@ class Aggregate:
         # Retail Data
         retail = Reader(self.working_dir, "/retail")
         retail.read_data()
+
+        # Covid Data
+        covid = Reader(self.working_dir, "/covid")
+        covid.read_data()
 
     def initialize_gdp_file(self) -> None:
         """
@@ -113,3 +124,11 @@ class Aggregate:
         Link: https://www150.statcan.gc.ca/t1/tbl1/en/cv.action?pid=2310000801
         """
         Cube(23100008, self.working_dir + "/flights")
+
+    def initialize_covid_file(self) -> None:
+        """
+        - OpenCovid Canada -
+        Open Source Covid Cases Data
+        Link: https://opencovid.ca/api/
+        """
+        OpenCovid("ON", self.working_dir + "/covid")

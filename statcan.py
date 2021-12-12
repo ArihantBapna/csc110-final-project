@@ -4,16 +4,23 @@ CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 Child to Requester that maps to making WDS requests to and from StatisticsCanada
 Following https://www.statcan.gc.ca/en/developers/wds/user-guide#a10-2 guidelines to make calls
 """
+# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+# of the MIT License for the simple fact that I was too lazy to write my own license You should
+# have received a copy of the license with this project, if not and for any other queries contact
+# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
+# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import json
 import os
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+
 from colorama import deinit, Fore, init
 from requests import Response
 from tqdm import tqdm
 
-from compilation.abstraction.reqester import Requester
+from reqester import Requester
 
 
 @dataclass
@@ -65,14 +72,16 @@ class StatCan(Requester):
         """
         Returns the link to the full csv zip file for a pid
         """
-        self.endpoint = "https://www150.statcan.gc.ca/t1/wds/rest/getFullTableDownloadCSV/" + str(self.pid) + "/en"
+        self.endpoint = "https://www150.statcan.gc.ca/t1/wds/rest/getFullTableDownloadCSV/" + str(
+            self.pid) + "/en"
         response = self.get_request()
 
         if response == '' or response is None:
             self.fail = True
         return response
 
-    def download_files(self, local_dir: str, filename: str, content_length: int, response: Response) -> str:
+    def download_files(self, local_dir: str, filename: str, content_length: int,
+                       response: Response) -> str:
         """
         Download a given file from a stream with a progress bar displayed
         :param local_dir:

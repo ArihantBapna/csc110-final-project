@@ -1,0 +1,6 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Copyright (c) &amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year&quot;)&amp;#36;today.year. Arihant Bapna  - All Rights Reserved| &#10;You may use this code under the terms of the MIT License for the simple fact that I was too lazy to write my own license&#10; You should have received a copy of the license with this project, if not and for any other queries contact me at: a.bapna@mail.utoronto.ca&#10; This code is part of the CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet" />
+    <option name="myName" value="Ari, HK and NM" />
+  </copyright>
+</component>

@@ -3,6 +3,12 @@ CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Parent class to initiate REST/Stream api calls over http/s and collect data
 """
+# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+# of the MIT License for the simple fact that I was too lazy to write my own license You should
+# have received a copy of the license with this project, if not and for any other queries contact
+# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
+# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import time
 from dataclasses import dataclass
 
@@ -75,7 +81,8 @@ class Requester:
         Returns a post request's response
         """
         try:
-            response = requests.post(url=self.endpoint, data=data, params=self.body, headers=self.headers)
+            response = requests.post(url=self.endpoint, data=data, params=self.body,
+                                     headers=self.headers)
         except requests.exceptions.ConnectionError or \
                 requests.exceptions.ConnectTimeout or \
                 urllib3.exceptions.ProtocolError or \
@@ -111,9 +118,17 @@ class Requester:
         Return a stream response
         """
         # Streaming, so we can iterate over the response.
-        response = requests.get(self.endpoint, stream=True)
-        self.response = response
+        try:
+            response = requests.get(self.endpoint, stream=True)
 
+        except requests.exceptions.ConnectionError or \
+                requests.exceptions.ConnectTimeout or \
+                urllib3.exceptions.ProtocolError or \
+                ConnectionResetError:
+            response = Response()
+        else:
+            print(Fore.GREEN + "[SUCCESS]: Stream initialized")
+        self.response = response
         # Ensure the stream is alive
         if not self.assert_request():
             self.get_stream()
@@ -189,16 +204,15 @@ class Requester:
                     print(Fore.RED
                           + "[FATAL ERROR]: Could not complete request to "
                           + self.endpoint)
-                    exit(1)
                 else:
                     print(Fore.YELLOW
                           + "[WARNING]: Could not complete request to "
                           + self.endpoint
                           + "Continuing based on last fetched.")
-                    self.fail = True
-                    return True
+                self.fail = True
+                return True
 
-            print("[INFO]: Retrying in 5 seconds"
+            print("[INFO]: Retrying in 5 seconds "
                   + "(" + str(self.attempts) + "/5)")
             time.sleep(5)
             deinit()

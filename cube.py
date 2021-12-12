@@ -3,6 +3,12 @@ CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Child to Requester that sends requests to the GDP of StatCan
 """
+# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+# of the MIT License for the simple fact that I was too lazy to write my own license You should
+# have received a copy of the license with this project, if not and for any other queries contact
+# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
+# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import json
 import os
 from dataclasses import dataclass
@@ -11,7 +17,7 @@ from pathlib import Path
 
 from colorama import deinit, Fore, init
 
-from compilation.abstraction.statcan import StatCan
+from statcan import StatCan
 
 
 @dataclass
@@ -62,9 +68,10 @@ class Cube(StatCan):
                 response = self.get_cube_metadata_backup(link, local_dir)
 
                 if response == "Failed":
-                    print(Fore.RED + "[FATAL ERROR]: Could not connect to the backup server either. "
-                                     "Servers may be down or you may not "
-                                     "be connect to the internet.")
+                    print(
+                        Fore.RED + "[FATAL ERROR]: Could not connect to the backup server either. "
+                                   "Servers may be down or you may not "
+                                   "be connect to the internet.")
                     exit(1)
                 else:
                     print(Fore.GREEN + "[SUCCESS]: Downloaded metadata file from the backup server")
@@ -226,12 +233,14 @@ class Cube(StatCan):
                       + str(error) + ". Ensure adequate permissions.")
                 exit(1)
             else:
-                print("[INFO]: Saved metadata to " + str(metadata_file.absolute()) + " successfully.")
+                print(
+                    "[INFO]: Saved metadata to " + str(metadata_file.absolute()) + " successfully.")
 
         # If the file is not immediately needed, compare cubeEndDate
 
         else:
-            curr_response_time = datetime.strptime(self.metadata['object']['cubeEndDate'], '%Y-%m-%d').date()
+            curr_response_time = datetime.strptime(self.metadata['object']['cubeEndDate'],
+                                                   '%Y-%m-%d').date()
             new_response_time = datetime.strptime(data['object']['cubeEndDate'], '%Y-%m-%d').date()
 
             # If the data just received is newer than the data stored save the new data
