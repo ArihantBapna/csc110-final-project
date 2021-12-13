@@ -11,7 +11,6 @@ Parent class to initiate REST/Stream api calls over http/s and collect data
 
 import time
 from dataclasses import dataclass
-
 import requests
 import urllib3.exceptions
 from colorama import deinit, Fore, init
@@ -222,3 +221,15 @@ class Requester:
             deinit()
             self.attempts = 0
             return True
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["requests", "colorama", "urllib3.exceptions", "time"],
+        'allowed-io': ['set_body', 'get_requests',
+                       'post_requests', 'get_header', 'get_stream', 'get_gdrive_stream',
+                       'get_confirm_token', 'catch_response_exception', 'assert_request']
+    })

@@ -14,9 +14,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-
 from colorama import deinit, Fore, init
-
 from statcan import StatCan
 
 
@@ -31,7 +29,7 @@ class Cube(StatCan):
     backup: str
     try_backup: bool
 
-    def __init__(self, pid: int, local_dir: str):
+    def __init__(self, pid: int, local_dir: str) -> None:
         init(autoreset=True)
 
         # Assume that we don't need to try the backup server
@@ -212,7 +210,7 @@ class Cube(StatCan):
                   + self.local_dir
                   + " failed. No updates will be made.")
 
-    def save_metadata_file(self, response, metadata_file) -> None:
+    def save_metadata_file(self, response: str, metadata_file: Path) -> None:
         """
         Attempt to save the metadata file if new data available
         :param response:
@@ -280,3 +278,15 @@ class Cube(StatCan):
 
         if self.update_dataset:
             self.get_table_downloaded(link=csv_link_response['object'], local_dir=self.local_dir)
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os", "json", "datetime",
+                          "statcan"],
+        'allowed-io': ['__init__', 'initialize_local_dir', 'save_data_file', 'save_metadata_file',
+                       'response_sanitation_check', 'run_metadata_tests']
+    })

@@ -9,15 +9,12 @@ Abstract Reader file that loads all the csv files into
 # me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
 # group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 
-import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-
 import pandas as pd
 from colorama import deinit, Fore, init
 from tqdm import tqdm
-
 from aggregate import Aggregate
 
 
@@ -31,11 +28,11 @@ class Reader(Aggregate):
     data_frame: pd.DataFrame
     fail: bool
 
-    def __init__(self, working_dir: str, local_dir: str):
+    def __init__(self, working_dir: str, local_dir: str, file: str) -> None:
         super().__init__(working_dir)
         self.local_dir = local_dir
 
-        filename = working_dir + local_dir + "/data.csv"
+        filename = working_dir + local_dir + "/" + file
         self.file_path = filename
 
         self.fail = False
@@ -53,8 +50,8 @@ class Reader(Aggregate):
                 total_len = sum(1 for _ in f)
         except IOError as error:
             print(
-                Fore.RED + "[FATAL ERROR]: Could not find data file " + self.file_path + " in " +
-                self.local_dir)
+                Fore.RED + "[FATAL ERROR]: Could not find data file " + self.file_path + " in "
+                + self.local_dir)
             print(str(error))
             self.fail = True
             return
@@ -81,34 +78,12 @@ class Reader(Aggregate):
 
         deinit()
 
-    def start_reading(self) -> pd.DataFrame:
-        """
-        Creates a progress bar to read
-        :return:
-        """
-        temp = pd.read_csv(self.file_path, nrows=20)
-        n = len(temp.to_csv(index=False))
-        df = [temp[:0]]
-        t = int(os.path.getsize(self.file_path) / n * 20 / 10 ** 5) + 1
-        with tqdm(total=t, file=sys.stdout) as pbar:
-            for i, chunk in enumerate(
-                    pd.read_csv(self.file_path, chunksize=10 ** 5, low_memory=False)):
-                df.append(chunk)
-                pbar.set_description('[INFO] Reading: %d' % (1 + i))
-                pbar.update(1)
-
-        data = temp[:0].append(df)
-        del df
-
-        return data
-
-    def chunk_reading_csv(self, length: int, chunksize: int):
+    def chunk_reading_csv(self, length: int, chunksize: int) -> pd.DataFrame:
         """
         Read the given data file through chunking
         :param chunksize:
         :param length:
         """
-        chunksize = chunksize
 
         data = pd.DataFrame()
 
@@ -122,19 +97,18 @@ class Reader(Aggregate):
 
         return data
 
-    def chunk_reading_json(self, length: int, chunksize: int):
+    def chunk_reading_json(self, length: int, chunksize: int) -> pd.DataFrame:
         """
         Read the given json data file through chunking
         :param length:
         :param chunksize:
         :return:
         """
-        chunksize = chunksize
 
         data = pd.DataFrame()
 
         with tqdm(total=length, file=sys.stdout) as pbar:
-            for chunk in pd.read_json(self.file_path, chunksize=chunksize, low_memory=False):
+            for chunk in pd.read_json(self.file_path, lines=True, chunksize=chunksize):
                 pbar.update(chunksize)
                 if data is pd.DataFrame():
                     data = chunk
@@ -142,3 +116,15 @@ class Reader(Aggregate):
                     data = data.append(chunk)
 
         return data
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os", "json", "pandas",
+                          "requests", "tqdm", "reqester", "aggregate", "sys"],
+        'allowed-io': ['__init__', 'read_data', 'start_reading', 'chunk_reading_csv',
+                       'chunk_reading_json']
+    })

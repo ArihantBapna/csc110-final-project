@@ -12,12 +12,9 @@ Aggregates all the data for the project and loads it all up
 import os
 from dataclasses import dataclass
 from pathlib import Path
-
 from colorama import Fore, init
-
 from cube import Cube
 from openvcovid import OpenCovid
-from reader import Reader
 
 
 @dataclass
@@ -59,30 +56,6 @@ class Aggregate:
         self.initialize_retail_file()
         self.initialize_flights_file()
         self.initialize_covid_file()
-
-        # Employment Data
-        employment = Reader(self.working_dir, "/employment")
-        employment.read_data()
-
-        # Consumer Data
-        cpi = Reader(self.working_dir, "/cpi")
-        cpi.read_data()
-
-        # Flights Data
-        flights = Reader(self.working_dir, "/flights")
-        flights.read_data()
-
-        # GDP Data
-        gdp = Reader(self.working_dir, "/gdp")
-        gdp.read_data()
-
-        # Retail Data
-        retail = Reader(self.working_dir, "/retail")
-        retail.read_data()
-
-        # Covid Data
-        covid = Reader(self.working_dir, "/covid")
-        covid.read_data()
 
     def initialize_gdp_file(self) -> None:
         """
@@ -132,3 +105,13 @@ class Aggregate:
         Link: https://opencovid.ca/api/
         """
         OpenCovid("ON", self.working_dir + "/covid")
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os"],
+        'allowed-io': ['__init__']
+    })

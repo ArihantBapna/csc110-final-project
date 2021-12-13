@@ -13,14 +13,14 @@ The main file to run our amazing project
 import os
 import sys
 
-from aggregate import Aggregate
-
 
 def main() -> int:
     """The main entry into the app"""
-
+    from aggregate import Aggregate
+    from reading import Reading
     agg = Aggregate("data")
     agg.initialize_all_files()
+    Reading("data")
     return 0
 
 

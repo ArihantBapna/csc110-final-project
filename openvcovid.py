@@ -12,7 +12,6 @@ import json
 import os
 import pathlib
 from dataclasses import dataclass
-
 import pandas
 from colorama import Fore, init
 from requests import Response
@@ -41,8 +40,7 @@ class OpenCovid(Requester):
         print("[INFO]: Attempting to aggregate Covid Data for province " + self.prov)
 
         file = self.prov + ".json"
-        final_file = self.prov + ".csv"
-        covid_path = pathlib.Path(local_dir + "/" + final_file)
+        covid_path = pathlib.Path(local_dir + "/" + file)
 
         if covid_path.is_file():
             print(Fore.GREEN + "[SUCCESS]: Found covid data at " + str(covid_path.absolute()))
@@ -82,8 +80,8 @@ class OpenCovid(Requester):
             result = self.save_covid_data_from_stream()
 
         if result == "Failed":
-            print(Fore.RED + "[FATAL ERROR]: Could not save covid data through any server." +
-                  "Please try again later")
+            print(Fore.RED + "[FATAL ERROR]: Could not save covid data through any server."
+                  + "Please try again later")
             exit(1)
         else:
             print(Fore.GREEN + "[SUCCESS]: Initialized Covid data for " + self.prov)
@@ -193,3 +191,16 @@ class OpenCovid(Requester):
                 print(Fore.GREEN + "[SUCCESS]: Created "
                       + self.local_dir)
         return needed
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os", "json", "pandas",
+                          "requests", "tqdm", "reqester"],
+        'allowed-io': ['__init__', 'convert_json_to_csv', 'get_covid_data',
+                       'save_covid_data_from_stream', 'download_covid_data_from_stream',
+                       'initialize_local_dir']
+    })

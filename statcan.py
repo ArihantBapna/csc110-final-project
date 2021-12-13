@@ -15,11 +15,9 @@ import os
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-
 from colorama import deinit, Fore, init
 from requests import Response
 from tqdm import tqdm
-
 from reqester import Requester
 
 
@@ -63,7 +61,7 @@ class StatCan(Requester):
             content_length = int(header.get('content-length', 0))
 
             filename = "cube_metadata.json"
-            file_link = self.download_files(local_dir, filename, content_length, response)
+            file_link = download_files(local_dir, filename, content_length, response)
             return file_link
         else:
             return "Failed"
@@ -80,36 +78,6 @@ class StatCan(Requester):
             self.fail = True
         return response
 
-    def download_files(self, local_dir: str, filename: str, content_length: int,
-                       response: Response) -> str:
-        """
-        Download a given file from a stream with a progress bar displayed
-        :param local_dir:
-        :param filename:
-        :param content_length:
-        :param response:
-        """
-        block_size = 1024  # 1 Kilobyte
-        file_link = local_dir + "/" + filename
-
-        print("[INFO]: Downloading " + filename + " to " + local_dir)
-
-        # Create a progress bar
-        progress_bar = tqdm(total=content_length, unit="iB", unit_scale=True)
-
-        # Create the temp zip file as a stream
-        with open(file_link, "wb") as file:
-            for data in response.iter_content(block_size):
-                progress_bar.update(len(data))
-                file.write(data)
-        file.close()
-        progress_bar.close()
-
-        print(Fore.GREEN + "[SUCCESS]: Finished downloading "
-              + file_link)
-
-        return file_link
-
     def get_table_downloaded(self, link: str, local_dir: str) -> None:
         """
         Download the csv zip from the link and return the path to the zip file
@@ -124,26 +92,25 @@ class StatCan(Requester):
 
         filename = self.endpoint.split("/")[-1]
 
-        file_link = self.download_files(local_dir, filename, content_length, response)
+        file_link = download_files(local_dir, filename, content_length, response)
 
         print("[INFO]: Extracting " + filename)
-        zipy = zipfile.ZipFile(file_link, "r")
+        with zipfile.ZipFile(file_link, "r") as zipy:
+            zip_filename = filename.replace("-eng", "").replace("zip", "csv")
+            zipy_info = zipy.infolist()
 
-        zip_filename = filename.replace("-eng", "").replace("zip", "csv")
-        zipy_info = zipy.infolist()
-
-        # Find the data file and extract it from the zip file saving it as data.csv
-        for zip_file in zipy_info:
-            if zip_file.filename == zip_filename:
-                zip_file.filename = "data.csv"
-                zipy.extract(zip_file, path=local_dir)
+            # Find the data file and extract it from the zip file saving it as data.csv
+            for zip_file in zipy_info:
+                if zip_file.filename == zip_filename:
+                    zip_file.filename = "data.csv"
+                    zipy.extract(zip_file, path=local_dir)
         zipy.close()
 
-        self.delete_temp_files(file_link, filename, local_dir)
+        delete_temp_files(file_link, filename, local_dir)
 
         deinit()
 
-    def get_table_downloaded_backup(self, link: str, local_dir: str, filename: str):
+    def get_table_downloaded_backup(self, link: str, local_dir: str, filename: str) -> None:
         """
         Download the csv zip file from the backup data source
         :param link:
@@ -159,40 +126,20 @@ class StatCan(Requester):
         header = self.get_header()
         content_length = int(header.get('content-length', 0))
 
-        file_link = self.download_files(local_dir, filename, content_length, response)
+        file_link = download_files(local_dir, filename, content_length, response)
         print("[INFO]: Extracting " + filename)
 
-        zipy = zipfile.ZipFile(file_link, "r")
-
-        # Find the data file and extract it from the zip file saving it as data.csv
-        zipy_info = zipy.infolist()
-        for zip_file in zipy_info:
-            if zip_file.filename == "data.csv":
-                zipy.extract(zip_file, path=local_dir)
+        with zipfile.ZipFile(file_link, "r") as zipy:
+            # Find the data file and extract it from the zip file saving it as data.csv
+            zipy_info = zipy.infolist()
+            for zip_file in zipy_info:
+                if zip_file.filename == "data.csv":
+                    zipy.extract(zip_file, path=local_dir)
         zipy.close()
 
-        zipy.close()
-
-        self.delete_temp_files(file_link, filename, local_dir)
+        delete_temp_files(file_link, filename, local_dir)
 
         deinit()
-
-    def delete_temp_files(self, file_link: str, filename: str, local_dir: str):
-        """
-        Deletes the temporary zip files
-        :param local_dir:
-        :param file_link:
-        :param filename:
-        """
-        # Delete the temp zip file
-        if os.path.exists(file_link):
-            os.remove(file_link)
-        else:
-            print(Fore.YELLOW + "[WARNING]: Could not delete " + filename + ". File doesn't exist")
-
-        print(Fore.GREEN
-              + "[SUCCESS]: Finished extracting " + filename + " to "
-              + str(Path(local_dir + "/data.csv").absolute()))
 
     def assert_request_statcan(self, response: str) -> None:
         """
@@ -231,3 +178,65 @@ class StatCan(Requester):
                       + self.endpoint
                       + " failed with stats" + status + ". Continuing based on last fetch")
         deinit()
+
+
+def download_files(local_dir: str, filename: str, content_length: int,
+                   response: Response) -> str:
+    """
+    Download a given file from a stream with a progress bar displayed
+    :param local_dir:
+    :param filename:
+    :param content_length:
+    :param response:
+    """
+    block_size = 1024  # 1 Kilobyte
+    file_link = local_dir + "/" + filename
+
+    print("[INFO]: Downloading " + filename + " to " + local_dir)
+
+    # Create a progress bar
+    progress_bar = tqdm(total=content_length, unit="iB", unit_scale=True)
+
+    # Create the temp zip file as a stream
+    with open(file_link, "wb") as file:
+        for data in response.iter_content(block_size):
+            progress_bar.update(len(data))
+            file.write(data)
+    file.close()
+    progress_bar.close()
+
+    print(Fore.GREEN + "[SUCCESS]: Finished downloading "
+          + file_link)
+
+    return file_link
+
+
+def delete_temp_files(file_link: str, filename: str, local_dir: str) -> None:
+    """
+    Deletes the temporary zip files
+    :param local_dir:
+    :param file_link:
+    :param filename:
+    """
+    # Delete the temp zip file
+    if os.path.exists(file_link):
+        os.remove(file_link)
+    else:
+        print(Fore.YELLOW + "[WARNING]: Could not delete " + filename + ". File doesn't exist")
+
+    print(Fore.GREEN
+          + "[SUCCESS]: Finished extracting " + filename + " to "
+          + str(Path(local_dir + "/data.csv").absolute()))
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os", "json", "pandas",
+                          "requests", "tqdm", "reqester", "zipfile"],
+        'allowed-io': ['__init__', 'get_cube_metadata', 'get_cube_metadata_backup',
+                       'get_full_table_csv_link', 'download_files', 'get_table_downloaded',
+                       'get_table_downloaded_backup', 'delete_temp_files', 'assert_request_statcan']
+    })
