@@ -50,11 +50,11 @@ class Aggregate:
         """
         Initializes all the data files
         """
-        self.initialize_gdp_file()
-        self.initialize_cpi_file()
-        self.initialize_employment_file()
-        self.initialize_retail_file()
-        self.initialize_flights_file()
+        # self.initialize_gdp_file()
+        # self.initialize_cpi_file()
+        # self.initialize_employment_file()
+        # self.initialize_retail_file()
+        # # self.initialize_flights_file()
         self.initialize_covid_file()
 
     def initialize_gdp_file(self) -> None:

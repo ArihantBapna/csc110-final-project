@@ -198,7 +198,7 @@ class Requester:
                   + self.endpoint)
 
             self.attempts += 1
-            if self.attempts > 5:
+            if self.attempts > 3:
                 if self.needed:
                     print(Fore.RED
                           + "[FATAL ERROR]: Could not complete request to "
@@ -212,7 +212,7 @@ class Requester:
                 return True
 
             print("[INFO]: Retrying in 5 seconds "
-                  + "(" + str(self.attempts) + "/5)")
+                  + "(" + str(self.attempts) + "/3)")
             time.sleep(5)
             deinit()
 

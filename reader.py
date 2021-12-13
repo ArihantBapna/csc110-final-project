@@ -70,10 +70,11 @@ class Reader(Aggregate):
             self.fail = True
             return
         else:
+            self.data_frame = data
             print(Fore.GREEN + "[SUCCESS]: Done reading " + str(Path(self.file_path).absolute()))
             print("[INFO]: Pandas dataframe contains " + str(
                 data.size) + " data points shaped " + str(data.shape))
-            print("[DATA]: ")
+            print(Fore.BLUE + "[DATA]: RAW")
             print(data.head(5))
 
         deinit()
