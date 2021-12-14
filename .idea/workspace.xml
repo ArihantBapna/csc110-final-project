@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9692b06d-dc4f-4b7d-9fe8-56fe48c7eb2d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webapp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graphing.py" beforeDir="false" afterPath="$PROJECT_DIR$/graphing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reading.py" beforeDir="false" afterPath="$PROJECT_DIR$/reading.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +56,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -205,7 +200,7 @@
       <workItem from="1639322901579" duration="255000" />
       <workItem from="1639323167248" duration="23626000" />
       <workItem from="1639379393391" duration="43224000" />
-      <workItem from="1639462600131" duration="1153000" />
+      <workItem from="1639462600131" duration="2074000" />
     </task>
     <servers />
   </component>
