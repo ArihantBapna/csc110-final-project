@@ -9,7 +9,6 @@ The main file to run our amazing project
 # if not and for any other queries contact me at: a.bapna@mail.utoronto.ca
 # This code is part of the CSC110F 2021 Final Project for the group consisting of Arihant Bapna,
 # Hongzip Kim and Nick Macasaet
-
 import os
 import sys
 
@@ -20,7 +19,10 @@ def main() -> int:
     from reading import Reading
     agg = Aggregate("data")
     agg.initialize_all_files()
-    Reading("data")
+    print("Finished data downloading")
+    reader = Reading("data")
+    reader.do_all_read()
+
     return 0
 
 

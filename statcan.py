@@ -62,6 +62,7 @@ class StatCan(Requester):
 
             filename = "cube_metadata.json"
             file_link = download_files(local_dir, filename, content_length, response)
+
             return file_link
         else:
             return "Failed"

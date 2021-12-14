@@ -10,6 +10,7 @@ Class that actually does the reading for the project
 # group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 
 from dataclasses import dataclass
+import multiprocessing as mp
 from process import Process
 from reader import Reader
 
@@ -20,49 +21,91 @@ class Reading:
     Read all the initialized files
     """
     working_dir: str
+    process: Process
 
     def __init__(self, working_dir: str) -> None:
         self.working_dir = working_dir
+        self.process = Process()
 
-        process = Process()
+    def do_all_read(self) -> None:
+        """
+        Read all the files
+        :return:
+        """
 
         # Employment Data
-        employment = Reader(self.working_dir, "/employment", "data.csv")
-        employment.read_data()
-        process.set_data(employment.data_frame)
-        employment.data_frame = process.process_employment_data()
-        process.clear_data()
+        employment_process = mp.Process(target=self.employment_read, args=())
+        employment_process.start()
+        employment_process.join()
 
         # Consumer Data
-        cpi = Reader(self.working_dir, "/cpi", "data.csv")
-        cpi.read_data()
-        process.set_data(cpi.data_frame)
-        cpi.data_frame = process.process_cpi_data()
-        process.clear_data()
+        cpi_process = mp.Process(target=self.cpi_read, args=())
+        cpi_process.start()
+        cpi_process.join()
 
         # GDP Data
-        gdp = Reader(self.working_dir, "/gdp", "data.csv")
-        gdp.read_data()
-        process.set_data(gdp.data_frame)
-        gdp.data_frame = process.process_gdp_data()
-        process.clear_data()
+        gdp_process = mp.Process(target=self.gdp_read, args=())
+        gdp_process.start()
+        gdp_process.join()
 
         # Retail Data
-        retail = self.do_read_file("/retail", "data.csv")
-        process.set_data(retail.data_frame)
-        retail.data_frame = process.process_retail_data()
-        process.clear_data()
+        retail_process = mp.Process(target=self.retail_read, args=())
+        retail_process.start()
+        retail_process.join()
 
         # Covid Data
+        covid_process = mp.Process(target=self.covid_read, args=())
+        covid_process.start()
+        covid_process.join()
+
+    def employment_read(self) -> None:
+        """
+        Read the employment data file
+        """
+
+        employment = Reader(self.working_dir, "/employment", "data.csv")
+        employment.read_data()
+        self.process.set_data(employment.data_frame)
+        employment.data_frame = self.process.process_employment_data()
+
+    def cpi_read(self) -> None:
+        """
+        Read the cpi data file
+        """
+
+        cpi = Reader(self.working_dir, "/cpi", "data.csv")
+        cpi.read_data()
+        self.process.set_data(cpi.data_frame)
+        cpi.data_frame = self.process.process_cpi_data()
+
+    def gdp_read(self) -> None:
+        """
+        Read the gdp data file
+        """
+
+        gdp = Reader(self.working_dir, "/gdp", "data.csv")
+        gdp.read_data()
+        self.process.set_data(gdp.data_frame)
+        gdp.data_frame = self.process.process_gdp_data()
+
+    def retail_read(self) -> None:
+        """
+        Read the retail data file
+        """
+
+        retail = self.do_read_file("/retail", "data.csv")
+        self.process.set_data(retail.data_frame)
+        retail.data_frame = self.process.process_retail_data()
+
+    def covid_read(self) -> None:
+        """
+        Read the covid data file
+        """
+
         covid = Reader(self.working_dir, "/covid", "ON.json")
         covid.read_data()
-        process.set_data(covid.data_frame)
-        covid.data_frame = process.process_covid_data()
-
-        # Post Processing of Data
-        valid = not covid.fail and not retail.fail and \
-            not gdp.fail and not cpi.fail and not employment.fail
-        process.done_processing(valid)
+        self.process.set_data(covid.data_frame)
+        covid.data_frame = self.process.process_covid_data()
 
     def do_read_file(self, local_dir: str, filename: str) -> Reader:
         """

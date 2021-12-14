@@ -197,7 +197,7 @@ class Requester:
                   + "Could not make the request to "
                   + self.endpoint)
 
-            self.attempts += 1
+            self.attempts += 4  # Change this back to 1
             if self.attempts > 3:
                 if self.needed:
                     print(Fore.RED

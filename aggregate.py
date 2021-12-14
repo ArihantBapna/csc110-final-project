@@ -10,9 +10,10 @@ Aggregates all the data for the project and loads it all up
 # group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 
 import os
+import multiprocessing as mp
 from dataclasses import dataclass
 from pathlib import Path
-from colorama import Fore, init
+from colorama import deinit, Fore, init
 from cube import Cube
 from openvcovid import OpenCovid
 
@@ -50,12 +51,28 @@ class Aggregate:
         """
         Initializes all the data files
         """
-        self.initialize_gdp_file()
-        self.initialize_cpi_file()
-        self.initialize_employment_file()
-        self.initialize_retail_file()
-        # self.initialize_flights_file()
-        self.initialize_covid_file()
+
+        p1 = mp.Process(target=self.initialize_gdp_file, args=())
+        p2 = mp.Process(target=self.initialize_cpi_file, args=())
+        p3 = mp.Process(target=self.initialize_employment_file, args=())
+        p4 = mp.Process(target=self.initialize_employment_file, args=())
+        p5 = mp.Process(target=self.initialize_retail_file, args=())
+        p6 = mp.Process(target=self.initialize_covid_file, args=())
+
+        p1.start()
+        p1.join()
+        p2.start()
+        p2.join()
+        p3.start()
+        p3.join()
+        p4.start()
+        p4.join()
+        p5.start()
+        p5.join()
+        p6.start()
+        p6.join()
+
+        deinit()
 
     def initialize_gdp_file(self) -> None:
         """
@@ -112,6 +129,6 @@ if __name__ == "__main__":
 
     python_ta.check_all(config={
         'max-line-length': 100,
-        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os"],
+        'extra-imports': ["pathlib", "colorama", "cube", "openvcovid", "os", "multiprocessing"],
         'allowed-io': ['__init__']
     })
