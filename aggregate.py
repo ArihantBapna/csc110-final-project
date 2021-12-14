@@ -105,6 +105,9 @@ class Aggregate:
         """
         Cube(20100008, self.working_dir + "/retail")
 
+    # Sample initializer that is not used by the rest of the program
+    # You could change the pid here to any other valid pid and as long as StatCan's wds is up
+    # you could see the program download the files for it
     def initialize_flights_file(self) -> None:
         """
         - Statistics Canada -
