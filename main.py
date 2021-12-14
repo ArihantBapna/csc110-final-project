@@ -13,9 +13,11 @@ The main file to run our amazing project
 import os
 import sys
 from pathlib import Path
-
 from colorama import Fore
 
+from graphing import Graphing
+from server import PlotServer
+from webapp import WebApp
 from writing import Writing
 
 
@@ -36,8 +38,23 @@ def main() -> int:
         print("Finished data downloading")
         reader.do_all_read()
     else:
-        print("[INFO]: Found processed data in folder")
-    reader.do_all_processed_read()
+        print("[INFO]: Found processed data in folder. Assuming it is right")
+    all_data = reader.do_all_processed_read()
+    graphing = Graphing(all_data)
+
+    # graphing.graph_employment_on_time()
+    # graphing.graph_cpi_on_time()
+    # graphing.graph_cpi_on_all_time()
+    # graphing.graph_gdp_on_time()
+    # graphing.graph_gdp_all_time()
+    # graphing.graph_retail_on_time()
+    # graphing.graph_covid_cases_on_time()
+    # graphing.graph_covid_on_unemployment()
+
+    webapp = WebApp(graphs=graphing)
+    webapp.set_layout()
+    server = PlotServer(webapp.get_app())
+    server.run_server()
 
     return 0
 

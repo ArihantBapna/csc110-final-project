@@ -164,6 +164,7 @@ class Reading:
         else:
             print(Fore.GREEN + "[SUCCESS]: Read " + str(Path(self.working_dir, "/processed_data",
                                                              filename).absolute()) + " into memory")
+            reader.data_frame['Date'] = pd.to_datetime(reader.data_frame['Date'], errors='coerce')
             print(Fore.BLUE + "[DATA] PROCESSED: ")
             print(reader.data_frame.head(5))
 
