@@ -11,6 +11,7 @@ Class that actually does the reading for the project
 
 from dataclasses import dataclass
 import multiprocessing as mp
+from writing import Writing
 from process import Process
 from reader import Reader
 
@@ -22,14 +23,16 @@ class Reading:
     """
     working_dir: str
     process: Process
+    writing: Writing
 
-    def __init__(self, working_dir: str) -> None:
+    def __init__(self, working_dir: str, write: Writing) -> None:
         self.working_dir = working_dir
         self.process = Process()
+        self.writing = write
 
     def do_all_read(self) -> None:
         """
-        Read all the files
+        Read all the files and initialize for processed data
         :return:
         """
 
@@ -68,6 +71,9 @@ class Reading:
         self.process.set_data(employment.data_frame)
         employment.data_frame = self.process.process_employment_data()
 
+        # Save the employment data to processed file
+        self.writing.save_csv_data(employment.data_frame, "employment.csv")
+
     def cpi_read(self) -> None:
         """
         Read the cpi data file
@@ -77,6 +83,8 @@ class Reading:
         cpi.read_data()
         self.process.set_data(cpi.data_frame)
         cpi.data_frame = self.process.process_cpi_data()
+
+        self.writing.save_csv_data(cpi.data_frame, "cpi.csv")
 
     def gdp_read(self) -> None:
         """
@@ -88,6 +96,8 @@ class Reading:
         self.process.set_data(gdp.data_frame)
         gdp.data_frame = self.process.process_gdp_data()
 
+        self.writing.save_csv_data(gdp.data_frame, "gdp.csv")
+
     def retail_read(self) -> None:
         """
         Read the retail data file
@@ -96,6 +106,8 @@ class Reading:
         retail = self.do_read_file("/retail", "data.csv")
         self.process.set_data(retail.data_frame)
         retail.data_frame = self.process.process_retail_data()
+
+        self.writing.save_csv_data(retail.data_frame, "retail.csv")
 
     def covid_read(self) -> None:
         """
@@ -106,6 +118,8 @@ class Reading:
         covid.read_data()
         self.process.set_data(covid.data_frame)
         covid.data_frame = self.process.process_covid_data()
+
+        self.writing.save_csv_data(covid.data_frame, "covid.csv")
 
     def do_read_file(self, local_dir: str, filename: str) -> Reader:
         """
@@ -124,5 +138,5 @@ if __name__ == "__main__":
 
     python_ta.check_all(config={
         'max-line-length': 100,
-        'extra-imports': ['reader', 'process']
+        'extra-imports': ['reader', 'process', 'writing']
     })

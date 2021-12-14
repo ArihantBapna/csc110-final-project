@@ -126,7 +126,7 @@ class Requester:
                 ConnectionResetError:
             response = Response()
         else:
-            print(Fore.GREEN + "[SUCCESS]: Stream initialized")
+            print(Fore.GREEN + "[SUCCESS]: Stream initialized to " + self.endpoint)
         self.response = response
         # Ensure the stream is alive
         if not self.assert_request():

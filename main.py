@@ -11,19 +11,54 @@ The main file to run our amazing project
 # Hongzip Kim and Nick Macasaet
 import os
 import sys
+from pathlib import Path
+
+from colorama import Fore
+
+from writing import Writing
 
 
 def main() -> int:
     """The main entry into the app"""
     from aggregate import Aggregate
     from reading import Reading
-    agg = Aggregate("data")
-    agg.initialize_all_files()
-    print("Finished data downloading")
-    reader = Reading("data")
-    reader.do_all_read()
+
+    working_dir = "data"
+    initialize_working_dir(working_dir)
+
+    write = Writing(working_dir)
+    if not write.data_found:
+        agg = Aggregate(working_dir)
+        agg.initialize_all_files()
+
+        print("Finished data downloading")
+        reader = Reading(working_dir, write)
+        reader.do_all_read()
+    else:
+        print("[INFO]: Found processed data in folder")
 
     return 0
+
+
+def initialize_working_dir(working_dir: str) -> None:
+    """
+    Initialize the working directory
+    :param working_dir:
+    :return:
+    """
+    path = Path(working_dir)
+    if not path.is_dir():
+        try:
+            os.mkdir(path)
+        except OSError as error:
+            print(Fore.RED + "[FATAL ERROR]: Unable to create "
+                  + str(path.absolute())
+                  + str(error)
+                  + ". Ensure adequate permissions.")
+            exit(1)  # exit marked here if unable to create/find the cube directory
+        else:
+            print(Fore.GREEN + "[SUCCESS]: Created "
+                  + str(path.absolute()))
 
 
 if __name__ == '__main__':
