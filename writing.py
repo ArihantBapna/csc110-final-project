@@ -51,7 +51,7 @@ class Writing:
         Save the processed data
         """
         try:
-            df.to_csv(self.local_dir + "/" + filename)
+            df.to_csv(self.local_dir + "/" + filename, index=False)
         except OSError as error:
             print(Fore.RED + "[FATAL ERROR]: Unable to create " + filename + "\n" + str(error))
         else:

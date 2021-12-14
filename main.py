@@ -9,6 +9,7 @@ The main file to run our amazing project
 # if not and for any other queries contact me at: a.bapna@mail.utoronto.ca
 # This code is part of the CSC110F 2021 Final Project for the group consisting of Arihant Bapna,
 # Hongzip Kim and Nick Macasaet
+
 import os
 import sys
 from pathlib import Path
@@ -27,15 +28,16 @@ def main() -> int:
     initialize_working_dir(working_dir)
 
     write = Writing(working_dir)
+    reader = Reading(working_dir, write)
     if not write.data_found:
         agg = Aggregate(working_dir)
         agg.initialize_all_files()
 
         print("Finished data downloading")
-        reader = Reading(working_dir, write)
         reader.do_all_read()
     else:
         print("[INFO]: Found processed data in folder")
+    reader.do_all_processed_read()
 
     return 0
 

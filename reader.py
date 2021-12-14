@@ -89,7 +89,8 @@ class Reader(Aggregate):
         data = pd.DataFrame()
 
         with tqdm(total=length, file=sys.stdout) as pbar:
-            for chunk in pd.read_csv(self.file_path, chunksize=chunksize, low_memory=False):
+            for chunk in pd.read_csv(self.file_path, chunksize=chunksize, low_memory=False,
+                                     index_col=False):
                 pbar.update(chunksize)
                 if data is pd.DataFrame():
                     data = chunk

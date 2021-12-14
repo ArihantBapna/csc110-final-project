@@ -11,6 +11,11 @@ Class that actually does the reading for the project
 
 from dataclasses import dataclass
 import multiprocessing as mp
+from pathlib import Path
+
+import pandas as pd
+from colorama import Fore
+
 from writing import Writing
 from process import Process
 from reader import Reader
@@ -60,6 +65,18 @@ class Reading:
         covid_process = mp.Process(target=self.covid_read, args=())
         covid_process.start()
         covid_process.join()
+
+    def do_all_processed_read(self) -> tuple:
+        """
+        Read all the processed datasets
+        """
+        employment = self.processed_reader('employment.csv')
+        cpi = self.processed_reader('cpi.csv')
+        gdp = self.processed_reader('gdp.csv')
+        retail = self.processed_reader('retail.csv')
+        covid = self.processed_reader('covid.csv')
+
+        return (employment, cpi, gdp, retail, covid)
 
     def employment_read(self) -> None:
         """
@@ -131,6 +148,26 @@ class Reading:
         reader_object = Reader(self.working_dir, local_dir, filename)
         reader_object.read_data()
         return reader_object
+
+    def processed_reader(self, filename: str) -> pd.DataFrame:
+        """
+        Read the processed data file
+        """
+
+        reader = Reader(self.working_dir, "/processed_data", filename)
+        reader.read_data()
+
+        if reader.fail:
+            print(Fore.RED + "[FATAL ERROR]: Could not read " + filename
+                  + " from processed data folder. Folder may be corrupted. Delete it and run again")
+            exit(1)
+        else:
+            print(Fore.GREEN + "[SUCCESS]: Read " + str(Path(self.working_dir, "/processed_data",
+                                                             filename).absolute()) + " into memory")
+            print(Fore.BLUE + "[DATA] PROCESSED: ")
+            print(reader.data_frame.head(5))
+
+        return reader.data_frame
 
 
 if __name__ == "__main__":
