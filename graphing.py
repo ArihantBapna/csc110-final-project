@@ -68,7 +68,8 @@ class Graphing:
         df = self.cpi
         df = df[(df['Date'].dt.year == 2020) | (df['Date'].dt.year == 2021)]
 
-        fig = px.scatter(df, x='Date', y='CpiValue', trendline="ols",
+        fig = px.scatter(df, x='Date', y='CpiValue', trendline="ewm",
+                         trendline_options=dict(halflife=2),
                          labels={
                              'Date': 'Date',
                              'CpiValue': 'Consumer Price Index'
@@ -195,10 +196,11 @@ class Graphing:
 
         fig = px.scatter(df, x='cases', y='UnemploymentValue', facet_col='Age', facet_row='Sex',
                          color='active',
-                         trendline='ols',
+                         trendline="ewm", trendline_options=dict(halflife=2),
                          labels={
-                             'UnemploymentValue': 'Unemployment (%) ',
-                             'cases': 'New Cases'
+                             'UnemploymentValue': 'Unem. (%)',
+                             'cases': 'New Cases',
+                             'active': 'Active Cases'
                          },
                          title="Covid Cases vs Unemployment")
 

@@ -18,7 +18,7 @@ from colorama import Fore, init
 from requests import Response
 from tqdm import tqdm
 
-from reqester import Requester
+from requester import Requester
 
 
 @dataclass

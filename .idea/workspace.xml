@@ -5,16 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aggregate.py" beforeDir="false" afterPath="$PROJECT_DIR$/aggregate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphing.py" beforeDir="false" afterPath="$PROJECT_DIR$/graphing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openvcovid.py" beforeDir="false" afterPath="$PROJECT_DIR$/openvcovid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/reader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reading.py" beforeDir="false" afterPath="$PROJECT_DIR$/reading.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reqester.py" beforeDir="false" afterPath="$PROJECT_DIR$/reqester.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openvcovid.py" beforeDir="false" afterPath="$PROJECT_DIR$/opencovid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reqester.py" beforeDir="false" afterPath="$PROJECT_DIR$/requester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/statcan.py" beforeDir="false" afterPath="$PROJECT_DIR$/statcan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/webapp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/writing.py" beforeDir="false" afterPath="$PROJECT_DIR$/writing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +93,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="reqester" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="requester" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="csc110-final-project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -113,7 +106,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/reqester.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/requester.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -193,7 +186,7 @@
         <item itemvalue="Python.writing" />
         <item itemvalue="Python.webapp" />
         <item itemvalue="Python.statcan" />
-        <item itemvalue="Python.reqester" />
+        <item itemvalue="Python.requester" />
         <item itemvalue="Python.reading" />
       </list>
     </recent_temporary>
@@ -211,7 +204,7 @@
       <workItem from="1639322901579" duration="255000" />
       <workItem from="1639323167248" duration="23626000" />
       <workItem from="1639379393391" duration="43224000" />
-      <workItem from="1639462600131" duration="5182000" />
+      <workItem from="1639462600131" duration="6927000" />
     </task>
     <servers />
   </component>

@@ -166,8 +166,8 @@ class Requester:
                   + "Could not make the request to "
                   + self.endpoint)
 
-            self.attempts += 3  # Change this back to 1
-            if self.attempts > 3:
+            self.attempts += 1  # Change this back to 1
+            if self.attempts > 1:
                 if self.needed:
                     print(Fore.RED
                           + "[FATAL ERROR]: Could not complete request to "

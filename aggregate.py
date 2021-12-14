@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from colorama import deinit, Fore, init
 from cube import Cube
-from openvcovid import OpenCovid
+from opencovid import OpenCovid
 
 
 @dataclass

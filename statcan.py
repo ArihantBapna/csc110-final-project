@@ -18,7 +18,7 @@ from pathlib import Path
 from colorama import deinit, Fore, init
 from requests import Response
 from tqdm import tqdm
-from reqester import Requester
+from requester import Requester
 
 
 @dataclass
