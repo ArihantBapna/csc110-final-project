@@ -2,12 +2,12 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Parent class to initiate REST/Stream api calls over http/s and collect data
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 
 import time
 from dataclasses import dataclass
@@ -59,12 +59,9 @@ class Requester:
         """
         try:
             response = requests.get(url=self.endpoint, params=self.body, headers=self.headers)
-        except requests.exceptions.ConnectionError or \
-                requests.exceptions.ConnectTimeout or \
-                urllib3.exceptions.ProtocolError or \
-                ConnectionResetError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout,
+                urllib3.exceptions.ProtocolError, ConnectionResetError):
             return ''
-
         else:
             self.response = response
             if not self.assert_request():
@@ -74,6 +71,7 @@ class Requester:
                     return response.json()
                 else:
                     return ''
+        return ''
 
     def post_request(self, data: str) -> str:
         """
@@ -82,10 +80,8 @@ class Requester:
         try:
             response = requests.post(url=self.endpoint, data=data, params=self.body,
                                      headers=self.headers)
-        except requests.exceptions.ConnectionError or \
-                requests.exceptions.ConnectTimeout or \
-                urllib3.exceptions.ProtocolError or \
-                ConnectionResetError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout,
+                urllib3.exceptions.ProtocolError, ConnectionResetError):
             return ''
         else:
             self.response = response
@@ -96,6 +92,7 @@ class Requester:
                     return response.json()
                 else:
                     return ''
+        return ''
 
     def get_header(self) -> CaseInsensitiveDict:
         """
@@ -111,6 +108,7 @@ class Requester:
                 return header
             else:
                 return CaseInsensitiveDict()
+        return CaseInsensitiveDict()
 
     def get_stream(self) -> Response:
         """
@@ -120,10 +118,8 @@ class Requester:
         try:
             response = requests.get(self.endpoint, stream=True)
 
-        except requests.exceptions.ConnectionError or \
-                requests.exceptions.ConnectTimeout or \
-                urllib3.exceptions.ProtocolError or \
-                ConnectionResetError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout,
+                urllib3.exceptions.ProtocolError, ConnectionResetError):
             response = Response()
         else:
             print(Fore.GREEN + "[SUCCESS]: Stream initialized to " + self.endpoint)
@@ -137,36 +133,9 @@ class Requester:
                 return response
             else:
                 return Response()
+        return Response()
 
-    def get_gdrive_stream(self, file_id) -> Response:
-        """
-        Return a stream from google drive
-        :return:
-        """
-
-        link = "https://docs.google.com/uc?export=download"
-        session = requests.Session()
-
-        response = session.get(link, params={'id': file_id}, stream=True)
-        token = self.get_confirm_token(response)
-
-        if token:
-            params = {'id': file_id, 'confirm': token}
-            response = session.get(link, params=params, stream=True)
-
-        return response
-
-    def get_confirm_token(self, response: Response):
-        """
-        Get confirm token from Google Drive
-        :param response:
-        :return:
-        """
-        for key, value in response.cookies.items():
-            if key.startsWith('download warning'):
-                return value
-
-    def catch_response_exception(self, error) -> str:
+    def catch_response_exception(self, error: any) -> str:
         """
         Handles any exception to connections
         :param error:
@@ -183,7 +152,7 @@ class Requester:
                   + " "
                   + str(error)
                   + ". Continuing based on last fetch")
-            return 'Failed'
+        return 'Failed'
 
     def assert_request(self) -> bool:
         """
@@ -197,7 +166,7 @@ class Requester:
                   + "Could not make the request to "
                   + self.endpoint)
 
-            self.attempts += 4  # Change this back to 1
+            self.attempts += 3  # Change this back to 1
             if self.attempts > 3:
                 if self.needed:
                     print(Fore.RED
@@ -212,7 +181,7 @@ class Requester:
                 return True
 
             print("[INFO]: Retrying in 5 seconds "
-                  + "(" + str(self.attempts) + "/3)")
+                  + "(" + str(self.attempts) + "/1)")
             time.sleep(5)
             deinit()
 
@@ -228,7 +197,8 @@ if __name__ == "__main__":
 
     python_ta.check_all(config={
         'max-line-length': 100,
-        'extra-imports': ["requests", "colorama", "urllib3.exceptions", "time"],
+        'extra-imports': ["requests", "requests.structures", "colorama",
+                          "urllib3.exceptions", "time"],
         'allowed-io': ['set_body', 'get_requests',
                        'post_requests', 'get_header', 'get_stream', 'get_gdrive_stream',
                        'get_confirm_token', 'catch_response_exception', 'assert_request']

@@ -2,12 +2,12 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Aggregates all the data for the project and loads it all up
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 
 import os
 import multiprocessing as mp
@@ -53,22 +53,21 @@ class Aggregate:
         """
 
         p1 = mp.Process(target=self.initialize_gdp_file, args=())
-        p2 = mp.Process(target=self.initialize_cpi_file, args=())
-        p3 = mp.Process(target=self.initialize_employment_file, args=())
-        p4 = mp.Process(target=self.initialize_employment_file, args=())
-        p5 = mp.Process(target=self.initialize_retail_file, args=())
-        p6 = mp.Process(target=self.initialize_covid_file, args=())
-
         p1.start()
         p1.join()
+        p2 = mp.Process(target=self.initialize_cpi_file, args=())
         p2.start()
         p2.join()
+        p3 = mp.Process(target=self.initialize_employment_file, args=())
         p3.start()
         p3.join()
+        p4 = mp.Process(target=self.initialize_employment_file, args=())
         p4.start()
         p4.join()
+        p5 = mp.Process(target=self.initialize_retail_file, args=())
         p5.start()
         p5.join()
+        p6 = mp.Process(target=self.initialize_covid_file, args=())
         p6.start()
         p6.join()
 

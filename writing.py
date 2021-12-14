@@ -2,16 +2,16 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Class that writes out the processed data
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import os
 from dataclasses import dataclass
 from pathlib import Path
-
 import pandas as pd
 from colorama import Fore
 
@@ -57,3 +57,13 @@ class Writing:
         else:
             print(Fore.GREEN + "[SUCCESS]: Created "
                   + str(Path(self.local_dir + "/" + filename).absolute()))
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["os", "pathlib", "pandas", "colorama"],
+        'allowed-io': ['__init__', 'save_csv_data']
+    })

@@ -2,12 +2,12 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Class that actually does the reading for the project
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 
 from dataclasses import dataclass
 import multiprocessing as mp
@@ -176,5 +176,7 @@ if __name__ == "__main__":
 
     python_ta.check_all(config={
         'max-line-length': 100,
-        'extra-imports': ['reader', 'process', 'writing']
+        'extra-imports': ['reader', 'process', 'writing', 'multiprocessing', 'pathlib', 'pandas',
+                          'colorama'],
+        'allowed-io': ['processed_reader']
     })

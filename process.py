@@ -2,12 +2,13 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Class that processes all the data for the project
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import gc
 from dataclasses import dataclass
 import pandas as pd
@@ -177,14 +178,15 @@ class Process:
 
         deinit()
 
-    def done_processing(self, valid: bool) -> None:
-        """
-        After all files have been processed
-        """
-        if valid:
-            print(Fore.GREEN + "[SUCCESS]: Done processing all data successfully.")
-        else:
-            print(Fore.RED + "[ERROR]: There was an error processing files. Please try again.")
+
+def done_processing(valid: bool) -> None:
+    """
+    After all files have been processed
+    """
+    if valid:
+        print(Fore.GREEN + "[SUCCESS]: Done processing all data successfully.")
+    else:
+        print(Fore.RED + "[ERROR]: There was an error processing files. Please try again.")
 
 
 if __name__ == "__main__":
@@ -193,5 +195,5 @@ if __name__ == "__main__":
     python_ta.check_all(config={
         'max-line-length': 100,
         'extra-imports': ['gc', 'pandas', 'colorama'],
-        'allowed-io': ['display_data', 'clear_data', '__init__']
+        'allowed-io': ['__init__', 'display_data', 'clear_data', 'done_processing']
     })

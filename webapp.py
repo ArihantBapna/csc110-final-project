@@ -2,12 +2,13 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Class that initializes the webapp for our project
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 from dataclasses import dataclass
 
 import dash
@@ -26,7 +27,7 @@ class WebApp:
     app: dash.Dash
     graphs: Graphing
 
-    def __init__(self, graphs) -> None:
+    def __init__(self, graphs: Graphing) -> None:
         self.app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
         self.graphs = graphs
 
@@ -133,3 +134,13 @@ class WebApp:
         Returns the app for the project
         """
         return self.app
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["dash", "dash_bootstrap_components", "colorama", "graphing"],
+        'allowed-io': ['set_layout']
+    })

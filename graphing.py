@@ -2,12 +2,13 @@
 CSC110 Project for Arihant Bapna, Hongzip Kim, and Nicholas Macasaet.
 
 Plotly Graphing class for the final projects
+
+Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
+of the MIT License. You should have received a copy of the license with this project,
+if not and for any other queries contact me at: a.bapna@mail.utoronto.ca This code is part of the
+CSC110F 2021 Final Project for the group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
 """
-# Copyright (c) 2021. Arihant Bapna  - All Rights Reserved| You may use this code under the terms
-# of the MIT License for the simple fact that I was too lazy to write my own license You should
-# have received a copy of the license with this project, if not and for any other queries contact
-# me at: a.bapna@mail.utoronto.ca This code is part of the CSC110F 2021 Final Project for the
-# group consisting of Arihant Bapna, Hongzip Kim and Nick Macasaet
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objs
@@ -207,3 +208,16 @@ class Graphing:
         print(Fore.GREEN + "[SUCCESS]: Generated graph from above data")
 
         return fig
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 100,
+        'extra-imports': ["plotly.express", "plotly.graph_objs", "pandas", "colorama"],
+        'allowed-io': ['__init__', 'graph_employment_on_time', 'graph_cpi_on_time',
+                       'graph_cpi_on_all_time', 'graph_gdp_on_time', 'graph_gdp_all_time',
+                       'graph_retail_on_time', 'graph_covid_cases_on_time',
+                       'graph_covid_on_unemployment']
+    })
