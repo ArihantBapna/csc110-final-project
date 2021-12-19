@@ -142,30 +142,30 @@ class Process:
         Process the covid data
         """
         init(autoreset=True)
-        case_data = pd.DataFrame.from_dict(self.data['cases'][0])
-        case_data['date_report'] = pd.to_datetime(case_data['date_report'], errors='coerce')
 
-        case_data = case_data.rename(columns={'date_report': 'Date'})
+        case_series = self.generate_series('cases', 'cases', 'date_report', 'Cases')
 
-        case_series = case_data.resample('MS', on='Date',
-                                         convention='end')['cases'].sum()
-        case_series.name = 'Cases'
+        active_series = self.generate_series('active', 'active_cases', 'date_active', 'Active')
 
-        active_data = pd.DataFrame.from_dict(self.data['active'][0])
-        active_data['date_active'] = pd.to_datetime(active_data['date_active'], errors='coerce')
-
-        active_data = active_data.rename(columns={'date_active': 'Date'})
-
-        active_series = active_data.resample('MS', on='Date',
-                                             convention='end')['active_cases'].sum()
-        active_series.name = 'Active'
-
-        # self.data = pd.concat([case_series, active_series], axis=1)
         self.data = pd.DataFrame(dict(cases=case_series, active=active_series)).reset_index()
 
         self.display_data()
 
         return self.data
+
+    def generate_series(self, series_name: str, series_sum: str, series_date: str, name: str) \
+            -> pd.DataFrame:
+        """
+        Generate a series from a name
+        """
+        series = pd.DataFrame.from_dict(self.data[series_name][0])
+        series[series_date] = pd.to_datetime(series[series_date], errors='coerce')
+        series = series.rename(columns={series_date: 'Date'})
+        series = series.resample('MS', on='Date', convention='end')[series_sum].sum()
+
+        series.name = name
+
+        return series
 
     def display_data(self) -> None:
         """
